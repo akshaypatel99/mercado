@@ -1,0 +1,30 @@
+# Auth Directive
+directive @auth(requires: [Role] = [ADMIN]) on OBJECT | FIELD_DEFINITION
+
+# Enum
+enum Role {
+	ADMIN
+	USER
+}
+
+# Types
+type User implements Timestamps {
+	id: ID!
+	name: String!
+	email: String!
+	password: String
+	role: String!
+	userProducts: [Product!]
+	userOrders: [Order!]
+
+	# Interface required
+	createdAt: Date!
+	updatedAt: Date!
+}
+
+# Inputs
+input UserInput {
+	name: String!
+	email: String!
+	password: String!
+}

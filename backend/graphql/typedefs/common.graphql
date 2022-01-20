@@ -1,0 +1,18 @@
+# Interface
+interface Timestamps {
+	createdAt: Date!
+	updatedAt: Date!
+}
+
+# Types
+type Address {
+	street: String!
+	city: String!
+	postcode: String!
+}
+
+input AddressInput {
+	street: String!
+	city: String!
+	postcode: String!
+}

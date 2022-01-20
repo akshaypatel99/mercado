@@ -1,0 +1,19 @@
+{
+  "name": "mercado",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/akshaypatel99/mercado.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/akshaypatel99/mercado/issues"
+  },
+  "homepage": "https://github.com/akshaypatel99/mercado#readme"
+}

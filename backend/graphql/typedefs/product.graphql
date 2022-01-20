@@ -1,0 +1,26 @@
+# Auth Directive
+directive @auth(requires: [Role] = [ADMIN]) on OBJECT | FIELD_DEFINITION
+
+# Types
+type Product implements Timestamps {
+	id: ID!
+	user: User!
+	name: String!
+	description: String!
+	image: String
+	category: String!
+	price: Float!
+
+	# Interface required
+	createdAt: Date!
+	updatedAt: Date!
+}
+
+# Inputs
+input ProductInput {
+	name: String!
+	description: String!
+	image: String
+	category: String!
+	price: Float!
+}

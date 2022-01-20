@@ -1,0 +1,32 @@
+scalar Date
+
+type Query {
+	# Product
+	products: [Product]!
+	product(id: ID!): Product
+
+	# User
+	users: [User]!
+	user(id: ID!): User
+
+	# Order
+	orders: [Order]!
+	order(id: ID!): Order
+}
+
+type Mutation {
+	# Product
+	createProduct(input: ProductInput): Product!
+	updateProduct(id: ID!, input: ProductInput): Product!
+	deleteProduct(id: ID!): String!
+
+	# User
+	createUser(input: UserInput): User!
+	updateUser(id: ID!, input: UserInput): User!
+	deleteUser(id: ID!): String!
+
+	# Order
+	createOrder(input: OrderInput): OrderResult
+	updateOrder(id: ID!, input: OrderInput): Order!
+	deleteOrder(id: ID!): String!
+}

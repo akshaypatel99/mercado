@@ -1,20 +1,35 @@
 {
-  "name": "keystone-app",
+  "name": "mercado-backend",
   "version": "1.0.0",
-  "private": true,
+  "description": "GraphQL, MongoDB and Node backend",
+  "main": "index.ts",
   "scripts": {
-    "dev": "keystone dev",
-    "start": "keystone start",
-    "build": "keystone build",
-    "postinstall": "keystone postinstall"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon index.ts"
+  },
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "@babel/cli": "^7.16.8",
+    "@babel/core": "^7.16.7",
+    "@babel/node": "^7.16.8",
+    "@babel/preset-env": "^7.16.8",
+    "@babel/preset-typescript": "^7.16.7",
+    "@types/bcryptjs": "^2.4.2",
+    "@types/mongoose": "^5.11.97",
+    "@types/node": "^17.0.10"
   },
   "dependencies": {
-    "@keystone-6/auth": "^1.0.1",
-    "@keystone-6/core": "^1.0.1",
-    "@keystone-6/fields-document": "^1.0.1",
-    "typescript": "^4.5.4"
-  },
-  "engines": {
-    "node": "^14.15 || ^16.13"
+    "@graphql-tools/schema": "^8.3.1",
+    "apollo-server-express": "^3.6.2",
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^14.2.0",
+    "express": "^4.17.2",
+    "graphql": "^16.2.0",
+    "jsonwebtoken": "^8.5.1",
+    "mongodb": "^4.3.1",
+    "mongoose": "^6.1.7",
+    "nodemon": "^2.0.15",
+    "ts-node": "^10.4.0"
   }
 }
