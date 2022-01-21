@@ -21,9 +21,9 @@ type Mutation {
 	deleteProduct(id: ID!): String!
 
 	# User
-	createUser(input: UserInput): User!
-	updateUser(id: ID!, input: UserInput): User!
-	deleteUser(id: ID!): String!
+	createUser(input: UserInput): AuthenticationResult
+	updateUserRole(id: ID!, role: String!): UserUpdateResult
+	deleteUser(id: ID!): UserDeleteResult
 
 	# Order
 	createOrder(input: OrderInput): OrderResult
