@@ -11,4 +11,8 @@ const env = {
   production: process.env.NODE_ENV === 'production',
 }
 
-export { port, env };
+const mongo = {
+  url: process.env.DATABASE_URL
+}
+
+export { port, env, mongo };

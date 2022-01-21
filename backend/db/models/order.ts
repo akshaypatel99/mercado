@@ -93,4 +93,6 @@ const orderSchema = new Schema(
 	}
 );
 
-export const OrderModel = model('Order', orderSchema);
+const OrderModel = model('Order', orderSchema);
+
+export default OrderModel;

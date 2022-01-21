@@ -1,17 +1,18 @@
-import 'dotenv/config';
+import dotenv from 'dotenv';
+import { mongo } from '../config/environment'
 import { connect } from 'mongoose';
 
-import { UserModel } from './schema/user';
-import { ProductModel } from './schema/product';
+dotenv.config();
 
 // Mongoose Connection
 const connectDB = async () => {
   try {
-    if (!process.env.DATABASE_URL) {
+    if (!mongo.url) {
       process.exit(1);
     }
-    const connected = await connect(process.env.DATABASE_URL);
+    const connected = await connect(mongo.url);
     console.log(`MongoDB Connected: ${connected.connection.host}`);
+    return connected;
   } catch (error) {
     console.error(`Error: ${(error as Error).message}`);
     process.exit(1);
