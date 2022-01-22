@@ -16,6 +16,11 @@ type Product implements Timestamps {
 	updatedAt: Date!
 }
 
+type Products {
+	info: Info!
+	results: [Product]!
+}
+
 type ProductResult {
 	message: String!
 	product: Product!

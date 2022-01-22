@@ -2,15 +2,15 @@ scalar Date
 
 type Query {
 	# Product
-	products: [Product]!
+	products(params: QueryParams): Products!
 	product(id: ID!): Product
 
 	# User
-	users: [User]!
+	users(params: QueryParams): Users!
 	user(id: ID!): User
 
 	# Order
-	orders: [Order]!
+	orders(params: QueryParams): Orders!
 	order(id: ID!): Order
 }
 

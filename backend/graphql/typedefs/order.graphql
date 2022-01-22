@@ -20,6 +20,11 @@ type Order implements Timestamps {
 	updatedAt: Date!
 }
 
+type Orders {
+	info: Info!
+	results: [Order]!
+}
+
 type PaymentResult {
 	id: String
 	status: String
@@ -33,7 +38,7 @@ type OrderResult {
 }
 
 input OrderInput {
-	orderItems: [ProductInput]!
+	orderItems: [ID]!
 	orderTotal: Float!
 	deliveryCost: Float!
 	totalCost: Float!

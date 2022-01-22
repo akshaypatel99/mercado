@@ -22,6 +22,11 @@ type User implements Timestamps {
 	updatedAt: Date!
 }
 
+type Users {
+	info: Info!
+	results: [User]!
+}
+
 type AuthenticationResult {
 	message: String!
 	userInfo: User!
