@@ -1,4 +1,27 @@
 import { Schema, Types, model } from 'mongoose';
+export interface Order {
+	user: Types.ObjectId;
+	orderItems: Types.ObjectId[];
+	orderTotal: Number;
+	deliveryCost: Number
+	totalCost: Number
+	deliveryAddress: {
+		street: String
+		city: String
+		postcode: String
+	}
+	deliveryDate: Date
+	paymentResult: {
+		id: String
+		status: String
+		updatedAt: String
+		emailAddress: String
+	}
+	isPaid: Boolean
+	paidAt: Date
+  created_at: Date;
+  updated_at: Date;
+}
 
 const orderSchema = new Schema(
 	{
@@ -9,19 +32,30 @@ const orderSchema = new Schema(
 		},
 		orderItems: [
 			{
-				name: { type: String, required: true },
-				qty: { type: Number, required: true },
-				image: { type: String, required: true },
-				price: { type: Number, required: true },
-				productId: {
+				product: {
 					type: Schema.Types.ObjectId,
 					required: true,
 					ref: 'Product',
 				},
 			},
 		],
+		orderTotal: {
+			type: Number,
+			required: true,
+			default: 0.0,
+		},
+		deliveryCost: {
+			type: Number,
+			required: true,
+			default: 0.0,
+		},
+		totalCost: {
+			type: Number,
+			required: true,
+			default: 0.0,
+		},
 		deliveryAddress: {
-			address: {
+			street: {
 				type: String,
 				required: true,
 			},
@@ -35,11 +69,7 @@ const orderSchema = new Schema(
 			},
 		},
 		deliveryDate: {
-			type: String,
-			required: true,
-		},
-		paymentMethod: {
-			type: String,
+			type: Date,
 			required: true,
 		},
 		paymentResult: {
@@ -56,35 +86,12 @@ const orderSchema = new Schema(
 				type: String,
 			},
 		},
-		trolleyTotal: {
-			type: Number,
-			required: true,
-			default: 0.0,
-		},
-		deliveryPrice: {
-			type: Number,
-			required: true,
-			default: 0.0,
-		},
-		totalPrice: {
-			type: Number,
-			required: true,
-			default: 0.0,
-		},
 		isPaid: {
 			type: Boolean,
 			required: true,
 			default: false,
 		},
 		paidAt: {
-			type: Date,
-		},
-		isDelivered: {
-			type: Boolean,
-			required: true,
-			default: false,
-		},
-		deliveredAt: {
 			type: Date,
 		},
 	},

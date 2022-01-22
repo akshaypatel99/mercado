@@ -6,14 +6,16 @@ const productMutations = {
     try {
       const { input } = args;
       const { user } = context;
-
-      const productData = Object.assign({}, input, { user: user.id });
+      console.log('user', user);
+      const productData = Object.assign({}, input, { user: user._id });
       const newProduct = new Product(productData);
       const productResult = await newProduct.save();
 
-      const productCreator = await User.findById({ _id: user.id })
-      productCreator.userProducts.unshift({ product: productResult._id });
-      await productCreator.save();
+      const productCreator = await User.findById(user.id);
+      if (productCreator) {
+        productCreator.userProducts.unshift({ product: productResult._id});
+        await productCreator.save();
+      }
 
       return {
         message: 'Product created!',

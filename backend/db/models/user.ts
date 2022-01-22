@@ -1,16 +1,11 @@
 import { Schema, Types, model } from 'mongoose';
-import bcrypt from 'bcryptjs';
-
-type UserProduct = {
-  product: Types.ObjectId
-}
-
-interface User {
+export interface User {
   name: String;
   email: String;
   password: String;
   role: String;
-  userProducts: UserProduct[];
+  userProducts: { product: Types.ObjectId }[];
+  userOrders: { order: Types.ObjectId }[];
 }
 
 const userSchema = new Schema<User>({
@@ -37,6 +32,14 @@ const userSchema = new Schema<User>({
       product: {
         type: Schema.Types.ObjectId,
         ref: 'Product'
+      }
+    }
+  ],
+  userOrders: [
+    {
+      order: {
+        type: Schema.Types.ObjectId,
+        ref: 'Order'
       }
     }
   ],

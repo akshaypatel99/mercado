@@ -4,7 +4,7 @@ directive @auth(requires: [Role] = [ADMIN]) on OBJECT | FIELD_DEFINITION
 # Types
 type Product implements Timestamps {
 	_id: ID!
-	user: String!
+	user: User!
 	name: String!
 	description: String!
 	image: String
