@@ -28,6 +28,7 @@ const productSchema = new Schema<Product>({
   image: {
     type: String,
     required: true,
+    default: '/images/default.webp'
   },
   category: {
     type: String,

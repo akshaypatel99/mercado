@@ -1,7 +1,7 @@
-import { ApolloError } from 'apollo-server-express';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { User } from '../../../db/models';
-import { hashPassword, createToken } from '../../../helpers/util';
+import { hashPassword, createToken, verifyPassword } from '../../../helpers/util';
 
 type UserData = {
   name: string;
@@ -11,10 +11,9 @@ type UserData = {
 }
 
 const userMutations = {
-  createUser: async (parent, args, context) => {
+  signup: async (parent, args,) => {
     try {
-      const { input } = args;
-      const { name, email, password } = input;
+      const { name, email, password } = args.input;
 
       const hashedPassword = await hashPassword(password);
 
@@ -43,10 +42,10 @@ const userMutations = {
           const decodedToken = jwtDecode<JwtPayload>(token);
           const expiresAt = decodedToken.exp;
 
-          const { id, name, email, role } = savedUser;
+          const { _id, name, email, role } = savedUser;
 
           const userInfo = {
-            id, name, email, role
+            _id, name, email, role
           }
 
           return {
@@ -58,6 +57,40 @@ const userMutations = {
         } else {
           throw new ApolloError('There was a problem creating your account')
         }
+      }
+    } catch (error) {
+      return error
+    }
+  },
+  login: async (parent, args) => {
+    try {
+      const { email, password } = args.input;
+
+      const user = await User.findOne({ email }).lean();
+
+      if (!user) {
+        throw new UserInputError('Wrong email or password');
+      }
+
+      const passwordValid = await verifyPassword(password, user.password);
+      
+      if (passwordValid) {
+        const { password, _id, ...rest } = user;
+        const userInfo = Object.assign({}, { _id, ...rest });
+
+        const token = createToken(userInfo);
+
+        const decodedToken = jwtDecode<JwtPayload>(token);
+        const expiresAt = decodedToken.exp;
+
+        return {
+          message: 'Authentication successful',
+          token,
+          userInfo,
+          expiresAt
+        }
+      } else {
+        throw new UserInputError('Wrong email or password');
       }
     } catch (error) {
       return error

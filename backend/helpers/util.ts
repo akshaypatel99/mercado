@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
+import { jwtSecret } from '../config/environment';
 
 const createToken = (user) => {
   // Sign the JWT
@@ -8,13 +9,13 @@ const createToken = (user) => {
   }
   return jwt.sign(
     {
-      id: user.id,
+      _id: user._id,
       email: user.email,
       role: user.role,
       iss: 'api.mercado',
       aud: 'api.mercado'
     },
-    process.env.JWT_SECRET,
+    jwtSecret,
     { algorithm: 'HS256', expiresIn: '1h' }
   );
 };
@@ -37,8 +38,8 @@ const hashPassword = async (password: string) => {
 };
 
 const verifyPassword = (
-  passwordAttempt: string,
-  hashedPassword: string
+  passwordAttempt,
+  hashedPassword
 ) => {
   return bcrypt.compare(passwordAttempt, hashedPassword);
 };

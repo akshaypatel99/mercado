@@ -3,7 +3,7 @@ directive @auth(requires: [Role] = [ADMIN]) on OBJECT | FIELD_DEFINITION
 
 # Types
 type Order implements Timestamps {
-	id: ID!
+	_id: ID!
 	user: User!
 	orderItems: [Product!]!
 	orderTotal: Float!
@@ -33,8 +33,7 @@ type OrderResult {
 }
 
 input OrderInput {
-	id: ID
-	user: UserInput!
+	_id: ID
 	orderItems: [ProductInput]!
 	orderTotal: Float!
 	deliveryCost: Float!

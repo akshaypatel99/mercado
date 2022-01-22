@@ -16,12 +16,13 @@ type Query {
 
 type Mutation {
 	# Product
-	createProduct(input: ProductInput): Product!
-	updateProduct(id: ID!, input: ProductInput): Product!
-	deleteProduct(id: ID!): String!
+	createProduct(input: ProductInput): ProductResult
+	updateProduct(id: ID!, input: ProductInput): ProductResult
+	deleteProduct(id: ID!): ProductDeleteResult
 
 	# User
-	createUser(input: UserInput): AuthenticationResult
+	signup(input: SignupInput): AuthenticationResult
+	login(input: LoginInput): AuthenticationResult
 	updateUserRole(id: ID!, role: String!): UserUpdateResult
 	deleteUser(id: ID!): UserDeleteResult
 

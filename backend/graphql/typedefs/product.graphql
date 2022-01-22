@@ -3,8 +3,8 @@ directive @auth(requires: [Role] = [ADMIN]) on OBJECT | FIELD_DEFINITION
 
 # Types
 type Product implements Timestamps {
-	id: ID!
-	user: User!
+	_id: ID!
+	user: String!
 	name: String!
 	description: String!
 	image: String
@@ -14,6 +14,16 @@ type Product implements Timestamps {
 	# Interface required
 	createdAt: Date!
 	updatedAt: Date!
+}
+
+type ProductResult {
+	message: String!
+	product: Product!
+}
+
+type ProductDeleteResult {
+	message: String!
+	product: Product
 }
 
 # Inputs

@@ -9,7 +9,7 @@ enum Role {
 
 # Types
 type User implements Timestamps {
-	id: ID!
+	_id: ID!
 	name: String!
 	email: String!
 	password: String
@@ -40,8 +40,13 @@ type UserDeleteResult {
 }
 
 # Inputs
-input UserInput {
+input SignupInput {
 	name: String!
+	email: String!
+	password: String!
+}
+
+input LoginInput {
 	email: String!
 	password: String!
 }

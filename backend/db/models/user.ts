@@ -2,9 +2,7 @@ import { Schema, Types, model } from 'mongoose';
 import bcrypt from 'bcryptjs';
 
 type UserProduct = {
-  product: {
-    type: Types.ObjectId
-  }
+  product: Types.ObjectId
 }
 
 interface User {
