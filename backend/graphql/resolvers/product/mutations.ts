@@ -34,7 +34,7 @@ const productMutations = {
       const product = await Product.findById({ _id: id });
 
       if (product) {
-        if (product.user === user.id || user.role === 'ADMIN') {
+        if (product.user === user._id || user.role === 'ADMIN') {
           product.name = name;
           product.description = description;
           product.category = category;
@@ -65,12 +65,18 @@ const productMutations = {
       const product = await Product.findById({ _id: id });
 
       if (product) {
-        if (product.user === user.id || user.role === 'ADMIN') {
-          const deletedProduct = await Product.findOneAndDelete({ _id: id, user: user.id });
+        if (product.user === user._id || user.role === 'ADMIN') {
+          const productCreator = await User.findById(product.user);
+          if (productCreator) {
+            const productIndex = productCreator.userProducts.indexOf({ product: product._id });
+            productCreator.userProducts.splice(productIndex, 1);
+            await productCreator.save();
+          }
+          const deletedProduct = await Product.findOneAndDelete({ _id: id });
 
           return {
             message: 'Product deleted!',
-            user: deletedProduct
+            product: deletedProduct
           }
         } else {
           throw new ApolloError('Unauthorized delete action')
