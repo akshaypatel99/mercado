@@ -12,9 +12,7 @@ const apolloServer = new ApolloServer({
       if (!token) {
         return { user: null };
       }
-
       const decoded = jwt.verify(token.slice(7), jwtSecret);
-      console.log('decoded', decoded)
       return { user: decoded }
     } catch (error) {
       return { user: null }

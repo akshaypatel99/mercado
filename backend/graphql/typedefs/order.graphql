@@ -33,7 +33,6 @@ type OrderResult {
 }
 
 input OrderInput {
-	_id: ID
 	orderItems: [ProductInput]!
 	orderTotal: Float!
 	deliveryCost: Float!
