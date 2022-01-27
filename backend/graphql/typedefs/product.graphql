@@ -31,6 +31,12 @@ type ProductDeleteResult {
 	product: Product
 }
 
+type UploadedFileResponse {
+	message: String!
+	publicId: String
+	url: String
+}
+
 # Inputs
 input ProductInput {
 	name: String!

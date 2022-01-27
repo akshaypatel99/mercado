@@ -1,5 +1,6 @@
 import { ApolloError } from 'apollo-server-express';
-import { Product, User } from '../../../db/models'
+import { Product, User } from '../../../db/models';
+import { uploadFile } from '../../../helpers/util';
 
 const productMutations = {
   createProduct: async (parent, args, context) => {
@@ -84,6 +85,21 @@ const productMutations = {
       } else {
         throw new ApolloError('Product not found')
       }
+    } catch (error) {
+      return error;
+    }
+  },
+  uploadPhoto: async (parent, args, context) => {
+    try {
+      const result = await uploadFile(args.file);
+      console.log('mutation result', result);
+
+      return {
+        message: 'Photo uploaded!',
+        url: result.secure_url,
+        publicId: result.public_id
+      }
+        
     } catch (error) {
       return error;
     }

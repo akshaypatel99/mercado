@@ -1,6 +1,7 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 import { jwtSecret } from '../config/environment';
+import cloudinary from 'cloudinary';
 
 const createToken = (user) => {
   // Sign the JWT
@@ -58,9 +59,36 @@ const requireAdmin = (req, res, next) => {
   next();
 };
 
+const uploadFile = async (file) => {
+  const { createReadStream } = await file;
+  const fileStream = createReadStream();
+
+  // Initialize cloudinary
+  cloudinary.v2.config({
+    cloud_name: process.env.CLOUDINARY_NAME,
+    api_key: process.env.CLOUDINARY_API_KEY,
+    api_secret: process.env.CLOUDINARY_API_SECRET
+  });
+
+  // Return Cloudinary object
+  return new Promise<any>((resolve, reject) => {
+    const cloudStream = cloudinary.v2.uploader.upload_stream(function (err, result) {
+      if (err) {
+        console.log('util', err);
+        reject(err);
+      }
+      console.log('util', result);
+      resolve(result);
+    });
+
+    fileStream.pipe(cloudStream);
+  });
+};
+
 export {
   createToken,
   hashPassword,
   verifyPassword,
-  requireAdmin
+  requireAdmin,
+  uploadFile
 };

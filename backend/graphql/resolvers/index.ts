@@ -1,6 +1,7 @@
 import { userQueries, userMutations, userFields } from "./user";
 import { productQueries, productMutations, productFields } from "./product";
 import { orderQueries, orderMutations, orderFields } from "./order";
+import { GraphQLUpload } from 'graphql-upload'
 
 const resolvers = {
   Query: {
@@ -8,6 +9,7 @@ const resolvers = {
     ...productQueries,
     ...orderQueries
   },
+  Upload: GraphQLUpload,
   Mutation: {
     ...userMutations,
     ...productMutations,

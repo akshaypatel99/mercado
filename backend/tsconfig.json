@@ -3,7 +3,8 @@
     "target": "ES2018",
     "module": "commonjs",
     "lib": [
-      "esnext"
+      "esnext",
+      "es2020"
     ],
     "strict": false,
     "rootDir": ".",

@@ -2,12 +2,6 @@ import { port } from './config/environment';
 import app from './app';
 import connectDB from './db';
 
-
-
-// app.get('/', (req, res) => {
-//     console.log("Apollo GraphQL Express server is ready");
-// });
-
 const start = async () => {
     try {
         console.log('Connecting to MongoDB');
