@@ -1,23 +1,21 @@
-import { ApolloServer } from 'apollo-server-express';
-import jwt from 'jsonwebtoken';
-import schema from './schema';
-import { jwtSecret } from '../config/environment';
+import { join } from 'path';
+import { readdirSync, readFileSync } from 'fs';
+import { makeExecutableSchema } from '@graphql-tools/schema';
+import resolvers from './resolvers';
 
-const apolloServer = new ApolloServer({
-  schema,
-  introspection: true,
-  context: ({ req }) => {
-    try {
-      const token = req.headers.authorization;
-      if (!token) {
-        return { user: null };
-      }
-      const decoded = jwt.verify(token.slice(7), jwtSecret);
-      return { user: decoded }
-    } catch (error) {
-      return { user: null }
-    }
-  }
-});
+const gqlFiles = readdirSync(join(__dirname, './typedefs'));
 
-export default apolloServer;
+let typeDefs: string = '';
+
+gqlFiles.forEach((file) => {
+  typeDefs += readFileSync(join(__dirname, './typedefs', file), {
+    encoding: 'utf8',
+  })
+})
+
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+})
+
+export default schema;

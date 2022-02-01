@@ -1,19 +1,37 @@
+import express from 'express';
+import http from 'http';
+import { ApolloServer } from 'apollo-server-express';
+import { graphqlUploadExpress } from 'graphql-upload';
 import { port } from './config/environment';
-import app from './app';
+import schema from './graphql/';
 import connectDB from './db';
 
-const start = async () => {
-    try {
-        console.log('Connecting to MongoDB');
-        await connectDB();
+async function startApolloServer(schema) {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-        app.listen(port, () => {
-            console.log(`🚀  GraphQL Server is running at http://localhost:${port}`);
-        });
-    } catch (error) {
-        console.log('Not able to run GraphQL server');
+  const server = new ApolloServer({
+    schema,
+    introspection: true,
+    context: ({ res }) => ({
+      res
+    })
+  });
+  
+  await server.start();
+  app.use(graphqlUploadExpress());
+  server.applyMiddleware({
+    app,
+    cors: {
+      credentials: true,
+      origin: ['http://localhost:3000', 'https://studio.apollographql.com']
     }
-};
+  });
 
-start();
+  await connectDB();
 
+  await new Promise<void>(resolve => httpServer.listen(port, resolve));
+  console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
+}
+
+startApolloServer(schema);
