@@ -28,10 +28,8 @@ type Users {
 }
 
 type AuthenticationResult {
-	message: String!
-	userInfo: User!
-	token: String!
-	expiresAt: String!
+	message: String
+	user: User
 }
 
 type UserUpdateResult {
