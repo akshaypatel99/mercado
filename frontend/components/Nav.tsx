@@ -2,7 +2,7 @@ import Link from 'next/link';
 
 export default function Nav() {
 	return (
-		<nav className='grid grid-cols-4 font-bold text-xl my-2 uppercase '>
+		<nav className='grid grid-cols-5 font-bold text-xl my-2 uppercase text-center'>
 			<Link href='/products'>
 				<a className='hover:text-teal-500'>Products</a>
 			</Link>
@@ -14,6 +14,9 @@ export default function Nav() {
 			</Link>
 			<Link href='/account'>
 				<a className='hover:text-teal-500'>Account</a>
+			</Link>
+			<Link href='/signup'>
+				<a className='hover:text-teal-500'>Sign Up</a>
 			</Link>
 		</nav>
 	);
