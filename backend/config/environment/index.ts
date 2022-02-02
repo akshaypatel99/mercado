@@ -15,6 +15,8 @@ const mongo = {
   url: process.env.DATABASE_URL
 }
 
-const jwtSecret = process.env.JWT_SECRET
+const jwtAccessSecret = process.env.JWT_ACCESS_SECRET
+const jwtRefreshSecret = process.env.JWT_REFRESH_SECRET
 
-export { port, env, mongo, jwtSecret };
+
+export { port, env, mongo, jwtAccessSecret, jwtRefreshSecret };

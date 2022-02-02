@@ -1,26 +1,69 @@
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
-import { jwtSecret } from '../config/environment';
+import { jwtAccessSecret, jwtRefreshSecret } from '../config/environment';
 import cloudinary from 'cloudinary';
+import { AuthenticationError } from 'apollo-server-express';
+import { UserInfo, UserData } from '../types';
 
-const createToken = (user) => {
+/* AUTH TOKEN HELPERS */
+const setTokens = (user) => {
   // Sign the JWT
-  if (!user.role) {
-    throw new Error('No user role specified');
+  const accessUser: UserInfo = {
+    _id: user._id,
   }
-  return jwt.sign(
+  const accessToken = jwt.sign(
     {
-      _id: user._id,
-      email: user.email,
-      role: user.role,
-      iss: 'api.mercado',
-      aud: 'api.mercado'
+      user: accessUser
     },
-    jwtSecret,
+    jwtAccessSecret,
     { algorithm: 'HS256', expiresIn: '1h' }
-  );
+  )
+
+  const refreshUser: UserInfo = {
+    _id: user._id,
+  }
+  const refreshToken = jwt.sign(
+    {
+      user: refreshUser
+    },
+    jwtRefreshSecret,
+    { algorithm: 'HS256', expiresIn: '7d' }
+  )
+  
+  return { accessToken, refreshToken };
 };
 
+const validateAccessToken = (token: string) => {
+  try {
+    return jwt.verify(token, jwtAccessSecret);
+  } catch (error) {
+    return null;
+  }
+};
+
+const validateRefreshToken = (token: string) => {
+  try {
+    return jwt.verify(token, jwtRefreshSecret);
+  } catch (error) { 
+    return null;
+  }
+};
+
+const tokenCookies = ({ accessToken, refreshToken }) => {
+  const cookieOptions = {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    SameSite: 'None',
+    maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
+  };
+
+  return {
+    access: ["access", accessToken, cookieOptions] as [string, string, object],
+    refresh: ["refresh", refreshToken, cookieOptions] as [string, string, object]
+  };
+}
+
+/* PASSWORD HELPERS */
 const hashPassword = async (password: string) => {
   return await new Promise((resolve, reject) => {
     // Generate a salt at level 12 strength
@@ -45,20 +88,7 @@ const verifyPassword = (
   return bcrypt.compare(passwordAttempt, hashedPassword);
 };
 
-const requireAdmin = (req, res, next) => {
-  if (!req.user) {
-    return res.status(401).json({
-      message: 'There was a problem authorizing the request'
-    });
-  }
-  if (req.user.role !== 'admin') {
-    return res
-      .status(401)
-      .json({ message: 'Insufficient role' });
-  }
-  next();
-};
-
+/* UPLOAD HELPERS */
 const uploadFile = async (file) => {
   const { createReadStream } = await file;
   const fileStream = createReadStream();
@@ -85,10 +115,23 @@ const uploadFile = async (file) => {
   });
 };
 
+
+/* AUTHENTICATION HELPERS */
+const checkUserRole = (user: UserData, allowableRoles: string[]) => {
+	if (!user || !allowableRoles.includes(user.role)) {
+		throw new AuthenticationError('Not authorized');
+	}
+	return true;
+};
+
+
 export {
-  createToken,
+  setTokens,
+  validateAccessToken,
+  validateRefreshToken,
+  tokenCookies,
   hashPassword,
   verifyPassword,
-  requireAdmin,
-  uploadFile
+  uploadFile,
+  checkUserRole
 };
