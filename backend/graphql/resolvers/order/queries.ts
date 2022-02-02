@@ -1,4 +1,5 @@
-import { Order } from "../../../db/models";
+import { ApolloError } from "apollo-server-express";
+import { User, Order } from "../../../db/models";
 
 const orderQueries = {
   orders: async (parent, args, context) => {
@@ -31,10 +32,18 @@ const orderQueries = {
       return error
     }
   },
-  order: async (parent, args, context) => {
+  order: async (parent, args, { req }) => {
     try {
       const { id } = args;
-      return await Order.findById(id)
+      const { user } = req;
+
+      const loggedInUser = await User.findById({ _id: user._id });
+      
+      if (loggedInUser.userOrders.includes({ order: id }) || loggedInUser.role === 'ADMIN') {
+        return await Order.findById(id)
+      } else {
+        throw new ApolloError('Unauthorized access')
+      }
     } catch (error) {
       return error
     }
