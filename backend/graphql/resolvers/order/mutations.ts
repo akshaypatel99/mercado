@@ -2,10 +2,10 @@ import { ApolloError } from "apollo-server-express";
 import { Order, User } from "../../../db/models";
 
 const orderMutations = {
-  createOrder: async (parent, args, context) => {
+  createOrder: async (parent, args, { req }) => {
     try {
       const { input } = args;
-      const { user } = context;
+      const { user } = req;
 
       const orderData = Object.assign({}, input, { user: user._id });
       const newOrder = new Order(orderData);

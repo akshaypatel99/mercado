@@ -3,10 +3,10 @@ import { Product, User } from '../../../db/models';
 import { uploadFile } from '../../../helpers/util';
 
 const productMutations = {
-  createProduct: async (parent, args, context) => {
+  createProduct: async (parent, args, { req }) => {
     try {
       const { input } = args;
-      const { user } = context;
+      const { user } = req;
       console.log('user', user);
       const productData = Object.assign({}, input, { user: user._id });
       const newProduct = new Product(productData);
@@ -26,16 +26,17 @@ const productMutations = {
       return error
     }
   },
-  updateProduct: async (parent, args, context) => { 
+  updateProduct: async (parent, args, { req }) => { 
     try {
       const { id, input } = args;
-      const { user } = context;
+      const { user } = req;
       const { name, description, category, image, price } = input;
 
       const product = await Product.findById({ _id: id });
+      const loggedInUser = await User.findById({ _id: user._id });
 
       if (product) {
-        if (product.user === user._id || user.role === 'ADMIN') {
+        if (product.user === user._id || loggedInUser.role === 'ADMIN') {
           product.name = name;
           product.description = description;
           product.category = category;
@@ -58,15 +59,16 @@ const productMutations = {
       return error
     }
   },
-  deleteProduct: async (parent, args, context) => {
+  deleteProduct: async (parent, args, { req }) => {
     try {
       const { id } = args;
-      const { user } = context;
+      const { user } = req;
 
       const product = await Product.findById({ _id: id });
+       const loggedInUser = await User.findById({ _id: user._id });
 
       if (product) {
-        if (product.user === user._id || user.role === 'ADMIN') {
+        if (product.user === user._id || loggedInUser.role === 'ADMIN') {
           const productCreator = await User.findById(product.user);
           if (productCreator) {
             const productIndex = productCreator.userProducts.indexOf({ product: product._id });

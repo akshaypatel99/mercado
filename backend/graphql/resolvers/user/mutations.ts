@@ -1,17 +1,10 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
 import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { User } from '../../../db/models';
-import { hashPassword, createToken, verifyPassword } from '../../../helpers/util';
-
-type UserData = {
-  name: string;
-  email: string;
-  password: string;
-  role: string;
-}
+import { hashPassword, setTokens, tokenCookies, verifyPassword, checkUserRole } from '../../../helpers/util';
 
 const userMutations = {
-  signup: async (parent, args,) => {
+  signup: async (parent, args, { res }) => {
     try {
       const { name, email, password } = args.input;
 
@@ -21,7 +14,7 @@ const userMutations = {
         throw new ApolloError('There was a problem creating your account, please try again')
       } else if (typeof hashedPassword === 'string') {
 
-        const userData: UserData = {
+        const userData = {
           name,
           email,
           password: hashedPassword,
@@ -38,21 +31,15 @@ const userMutations = {
         const savedUser = await newUser.save();
 
         if (savedUser) {
-          const token = createToken(savedUser);
-          const decodedToken = jwtDecode<JwtPayload>(token);
-          const expiresAt = decodedToken.exp;
+          const tokens = setTokens(savedUser);
+          const cookies = tokenCookies(tokens);
 
-          const { _id, name, email, role } = savedUser;
-
-          const userInfo = {
-            _id, name, email, role
-          }
+          res.cookie(...cookies.access);
+          res.cookie(...cookies.refresh);
 
           return {
             message: 'User created!',
-            token,
-            userInfo,
-            expiresAt
+            user: savedUser
           };
         } else {
           throw new ApolloError('There was a problem creating your account')
@@ -62,36 +49,42 @@ const userMutations = {
       return error
     }
   },
-  login: async (parent, args) => {
+  login: async (parent, args, { res }) => {
     try {
       const { email, password } = args.input;
 
-      const user = await User.findOne({ email }).lean();
+      const foundUser = await User.findOne({ email }).lean();
 
-      if (!user) {
+      if (!foundUser) {
         throw new UserInputError('Wrong email or password');
       }
 
-      const passwordValid = await verifyPassword(password, user.password);
+      const passwordValid = await verifyPassword(password, foundUser.password);
       
       if (passwordValid) {
-        const { password, _id, ...rest } = user;
-        const userInfo = Object.assign({}, { _id, ...rest });
+        const tokens = setTokens(foundUser);
+        const cookies = tokenCookies(tokens);
 
-        const token = createToken(userInfo);
-
-        const decodedToken = jwtDecode<JwtPayload>(token);
-        const expiresAt = decodedToken.exp;
+        res.cookie(...cookies.access);
+        res.cookie(...cookies.refresh);
 
         return {
           message: 'Authentication successful',
-          token,
-          userInfo,
-          expiresAt
+          user: foundUser
         }
       } else {
         throw new UserInputError('Wrong email or password');
       }
+    } catch (error) {
+      return error
+    }
+  },
+  logout: async (parent, args, { res }) => {
+    try {
+      res.clearCookie('access');
+      res.clearCookie('refresh');
+
+      return true;
     } catch (error) {
       return error
     }
