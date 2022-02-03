@@ -1,10 +1,10 @@
 import { Product } from '../../../db/models'
 
 const productQueries = {
-  products: async (parent, args, context) => {
+  products: async (parent, { params }, context) => {
     try {
-      const { pageSize, page } = args.params;
-
+      const { pageSize, page } = params;
+      
       return {
         results: async () => {
           const products = await Product.find()
@@ -31,9 +31,8 @@ const productQueries = {
       return error
     }
   },
-  product: async (parent, args, context) => {
+  product: async (parent, { id }, context) => {
     try {
-      const { id } = args;
       return await Product.findById(id)
     } catch (error) {
       return error

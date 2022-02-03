@@ -1,12 +1,11 @@
 import { ApolloError, UserInputError } from 'apollo-server-express';
-import jwtDecode, { JwtPayload } from 'jwt-decode';
 import { User } from '../../../db/models';
 import { hashPassword, setTokens, tokenCookies, verifyPassword, checkUserRole } from '../../../helpers/util';
 
 const userMutations = {
-  signup: async (parent, args, { res }) => {
+  signup: async (parent, { input }, { res }) => {
     try {
-      const { name, email, password } = args.input;
+      const { name, email, password } = input;
 
       const hashedPassword = await hashPassword(password);
 
@@ -49,9 +48,9 @@ const userMutations = {
       return error
     }
   },
-  login: async (parent, args, { res }) => {
+  login: async (parent, { input }, { res }) => {
     try {
-      const { email, password } = args.input;
+      const { email, password } = input;
 
       const foundUser = await User.findOne({ email }).lean();
 
@@ -89,13 +88,9 @@ const userMutations = {
       return error
     }
   },
-  updateUserRole: async (parent, args, context) => {
+  updateUserRole: async (parent, { id, role }, context) => {
     try {
-      // const { user } = context;
-      const { id, role } = args;
       const allowedRoles = ['USER', 'ADMIN'];
-
-      // Add if statement of user.role === 'ADMIN' only
 
       if (!allowedRoles.includes(role)) {
         throw new ApolloError('Invalid user role')
@@ -111,10 +106,8 @@ const userMutations = {
       return error;
     }
   },
-  deleteUser: async (parent, args, context) => {
+  deleteUser: async (parent, { id }, context) => {
     try {
-      const { id } = args;
-
       const deletedUser = await User.findOneAndDelete({ _id: id });
 
       return {
