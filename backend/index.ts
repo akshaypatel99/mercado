@@ -23,7 +23,7 @@ async function startApolloServer(schema) {
 
   const corsOptions = {
     credentials: true,
-    origin: [process.env.DEVELOPMENT_URL, process.env.PRODUCTION_URL, process.env.APOLLO_URL]
+    origin: [process.env.DEVELOPMENT_URL, process.env.PRODUCTION_URL, process.env.APOLLO_STUDIO_URL]
   };
 
   app.use(cors(corsOptions))
