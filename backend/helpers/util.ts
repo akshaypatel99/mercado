@@ -53,13 +53,14 @@ const tokenCookies = ({ accessToken, refreshToken }) => {
   const cookieOptions = {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    SameSite: 'None',
+    SameSite: 'Lax',
+    domain: process.env.NODE_ENV === "production" ? process.env.PRODUCTION_URL : process.env.DEVELOPMENT_URL,
     maxAge: 1000 * 60 * 60 * 24 * 7 // 1 week
   };
 
   return {
-    access: ["access", accessToken, cookieOptions] as [string, string, object],
-    refresh: ["refresh", refreshToken, cookieOptions] as [string, string, object]
+    access: ['access', accessToken, cookieOptions] as [string, string, object],
+    refresh: ['refresh', refreshToken, cookieOptions] as [string, string, object]
   };
 }
 

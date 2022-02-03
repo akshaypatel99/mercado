@@ -1,10 +1,10 @@
 import { setTokens, tokenCookies, validateAccessToken, validateRefreshToken } from "../helpers/util";
 import { User } from "../db/models";
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 
-export default async function validateTokensMiddleware(req: Request, res: Response, next) {
-  const refreshToken = req.cookies["refresh"];
-  const accessToken = req.cookies["access"];
+export default async function validateTokensMiddleware(req: Request, res: Response, next: NextFunction) {
+  const refreshToken = req.cookies['refresh'];
+  const accessToken = req.cookies['access'];
   if (!accessToken && !refreshToken) return next();
 
   // If access token is valid, continue
@@ -23,8 +23,8 @@ export default async function validateTokensMiddleware(req: Request, res: Respon
 
     // If refresh token is invalid, clear cookies
     if (!user) {
-      res.clearCookie("refresh");
-      res.clearCookie("access");
+      res.clearCookie('refresh');
+      res.clearCookie('access');
       return next();
     }
 
