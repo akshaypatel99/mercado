@@ -47,13 +47,13 @@ export default function Login() {
 	}
 
 	return (
-		<div className='flex flex-col justify-center items-center h-full w-full'>
+		<div className=''>
 			I am the Login Page
 			{error && <p>{error.message}</p>}
 			{data && data.login.user.name}
 			<form className='flex flex-col' onSubmit={handleLogin}>
 				<input
-					className='w-72 m-1 py-2 px-4 border-2 border-gray-400'
+					className=''
 					type='email'
 					name='email'
 					placeholder='Enter email address'
@@ -61,7 +61,7 @@ export default function Login() {
 					onChange={(e) => setEmail(e.target.value)}
 				/>
 				<input
-					className='w-72 m-1 py-2 px-4 border-2 border-gray-400'
+					className=''
 					type='password'
 					name='password'
 					placeholder='Enter password'

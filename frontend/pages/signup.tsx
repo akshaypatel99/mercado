@@ -40,13 +40,13 @@ export default function SignUp() {
 	}
 
 	return (
-		<div className='flex flex-col justify-center items-center h-full w-full'>
+		<div className=''>
 			I am the SignIn Page
 			{error && <p>{error.message}</p>}
 			{data && data.signup.user.name}
 			<form className='flex flex-col' onSubmit={handleSignUp}>
 				<input
-					className='w-72 m-1 py-2 px-4 border-2 border-gray-400'
+					className=''
 					type='text'
 					name='name'
 					placeholder='Enter your full name'
@@ -56,7 +56,7 @@ export default function SignUp() {
 					}
 				/>
 				<input
-					className='w-72 m-1 py-2 px-4 border-2 border-gray-400'
+					className=''
 					type='email'
 					name='email'
 					placeholder='Enter email address'
@@ -66,7 +66,7 @@ export default function SignUp() {
 					}
 				/>
 				<input
-					className='w-72 m-1 py-2 px-4 border-2 border-gray-400'
+					className=''
 					type='password'
 					name='password'
 					placeholder='Enter password'

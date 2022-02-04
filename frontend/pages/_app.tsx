@@ -3,10 +3,14 @@ import type { AppProps } from 'next/app';
 import { ApolloClient, from, InMemoryCache } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { createUploadLink } from 'apollo-upload-client';
+import { ChakraProvider } from '@chakra-ui/react';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import Page from '../components/Page';
-import '../styles/globals.css';
+import theme from '../styles/theme';
+import '@fontsource/raleway/400.css';
+import '@fontsource/open-sans/700.css';
+import '@fontsource/oleo-script/400.css';
 import 'nprogress/nprogress.css';
 
 Router.events.on('routeChangeStart', () => NProgress.start());
@@ -25,7 +29,7 @@ const errorLink = onError(({ graphQLErrors, networkError }) => {
 });
 
 const uploadLink = createUploadLink({
-	uri: process.env.REACT_APP_GRAPHQL_URI,
+	uri: process.env.NEXT_PUBLIC_GRAPHQL_URI_DEV,
 	credentials: 'include',
 });
 
@@ -38,9 +42,11 @@ const client = new ApolloClient({
 function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<ApolloProvider client={client}>
-			<Page>
-				<Component {...pageProps} />
-			</Page>
+			<ChakraProvider resetCSS theme={theme}>
+				<Page>
+					<Component {...pageProps} />
+				</Page>
+			</ChakraProvider>
 		</ApolloProvider>
 	);
 }

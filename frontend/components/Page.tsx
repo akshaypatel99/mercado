@@ -1,16 +1,15 @@
 import { ReactNode } from 'react';
+import { Container } from '@chakra-ui/react';
 import Header from './Header';
 
 type PageProps = { children: ReactNode };
 
 const Page = ({ children }: PageProps, { ...props }) => {
 	return (
-		<div className='font-body w-screen h-screen'>
-			<div className='container mx-auto'>
-				<Header />
-				{children}
-			</div>
-		</div>
+		<Container maxW='container.xl'>
+			<Header />
+			{children}
+		</Container>
 	);
 };
 
