@@ -14,8 +14,8 @@ const theme = extendTheme({
   },
   fonts: {
     logo: 'Oleo Script',
-    heading: 'Open Sans',
-    body: 'Raleway',
+    heading: 'Rambla',
+    body: 'Martel Sans',
   },
   styles: {
     global: {
@@ -27,8 +27,13 @@ const theme = extendTheme({
       header: {
         bg: 'brand.red',
         color: 'brand.white',
-        padding: '1rem',
+        padding: '1rem 0',
       },
+      nav: {
+        fontFamily: 'heading',
+        fontSize: '1.4rem',
+        fontWeight: 'bold',
+      }
     }
   }
 });

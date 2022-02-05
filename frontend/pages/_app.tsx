@@ -8,8 +8,12 @@ import NProgress from 'nprogress';
 import Router from 'next/router';
 import Page from '../components/Page';
 import theme from '../styles/theme';
-import '@fontsource/raleway/400.css';
-import '@fontsource/open-sans/700.css';
+import '@fontsource/martel-sans/300.css';
+import '@fontsource/martel-sans/400.css';
+import '@fontsource/martel-sans/600.css';
+import '@fontsource/martel-sans/700.css';
+import '@fontsource/rambla/400.css';
+import '@fontsource/rambla/700.css';
 import '@fontsource/oleo-script/400.css';
 import 'nprogress/nprogress.css';
 
