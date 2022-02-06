@@ -4,6 +4,7 @@ import { ApolloClient, from, InMemoryCache } from '@apollo/client';
 import { onError } from '@apollo/client/link/error';
 import { createUploadLink } from 'apollo-upload-client';
 import { ChakraProvider } from '@chakra-ui/react';
+import { AuthProvider } from '../context/auth';
 import NProgress from 'nprogress';
 import Router from 'next/router';
 import Page from '../components/Page';
@@ -47,9 +48,11 @@ function MyApp({ Component, pageProps }: AppProps) {
 	return (
 		<ApolloProvider client={client}>
 			<ChakraProvider resetCSS theme={theme}>
-				<Page>
-					<Component {...pageProps} />
-				</Page>
+				<AuthProvider>
+					<Page>
+						<Component {...pageProps} />
+					</Page>
+				</AuthProvider>
 			</ChakraProvider>
 		</ApolloProvider>
 	);
