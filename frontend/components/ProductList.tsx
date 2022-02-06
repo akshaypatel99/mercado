@@ -1,4 +1,6 @@
 import { gql, useQuery } from '@apollo/client';
+import { SimpleGrid } from '@chakra-ui/react';
+import ProductListItem from './ProductListItem';
 
 type Product = {
 	_id: string;
@@ -45,17 +47,14 @@ export default function ProductList() {
 	if (error) return <p>Error: {error.message}</p>;
 
 	return (
-		<div>
-			<p>Products!</p>
+		<SimpleGrid minChildWidth='350px' spacing='60px' mt='8'>
 			{data.products.results.map((product: Product) => (
-				<div key={product._id}>
-					<h3>{product.name}</h3>
-					<p>{product.category}</p>
-					<p>{product.description}</p>
-					<h4>{product.price}</h4>
-					<img src={product.image} alt={product.name} />
-				</div>
+				<ProductListItem
+					key={product._id}
+					product={product}
+					isNew={Math.random()}
+				/>
 			))}
-		</div>
+		</SimpleGrid>
 	);
 }
