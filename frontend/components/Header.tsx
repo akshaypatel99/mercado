@@ -5,7 +5,10 @@ import Nav from './Nav';
 const Header = () => {
 	return (
 		<header>
-			<Container maxW='container.xl'>
+			<Container
+				maxW='container.xl'
+				px={{ sm: '2rem', md: '1rem', xl: '0rem' }}
+			>
 				<Center>
 					<Heading as='h1' size='3xl' fontFamily='logo' my='2'>
 						Mercado

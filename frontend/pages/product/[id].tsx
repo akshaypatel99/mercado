@@ -1,7 +1,14 @@
 import { useRouter } from 'next/router';
+import Product from '../../components/Product';
 
 export default function ProductPage() {
 	const router = useRouter();
 	const { id } = router.query;
-	return <div>I am the Product Page for {id}</div>;
+
+	let prodId = '';
+	if (id && typeof id === 'string') {
+		prodId = id;
+	}
+
+	return <Product id={prodId} />;
 }

@@ -8,7 +8,11 @@ const Page = ({ children }: PageProps, { ...props }) => {
 	return (
 		<Box>
 			<Header />
-			<Container maxW='container.xl' my='16'>
+			<Container
+				maxW='container.xl'
+				my='16'
+				p={{ sm: '2rem', md: '1rem', lg: '0rem' }}
+			>
 				{children}
 			</Container>
 		</Box>

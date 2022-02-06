@@ -5,7 +5,6 @@ import formatPrice from '../lib/formatPrice';
 type ProductProps = {
 	_id: string;
 	name: string;
-	description: string;
 	image: string;
 	category: string;
 	price: number;
@@ -56,9 +55,8 @@ export default function Product({
 						</Box>
 					</Box>
 
-					<Box display='flex' justifyContent='space-between'>
+					<Box display='flex' pt='4' justifyContent='space-between'>
 						<Box
-							my='2'
 							fontSize='1.3rem'
 							fontWeight='semibold'
 							as='h4'
@@ -68,7 +66,6 @@ export default function Product({
 							{product.name}
 						</Box>
 						<Box
-							my='2'
 							fontSize='1.3rem'
 							fontWeight='semibold'
 							as='h4'

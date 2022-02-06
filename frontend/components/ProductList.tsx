@@ -5,7 +5,6 @@ import ProductListItem from './ProductListItem';
 type Product = {
 	_id: string;
 	name: string;
-	description: string;
 	image: string;
 	category: string;
 	price: number;
@@ -16,12 +15,7 @@ export const ALL_PRODUCTS = gql`
 		products(params: $params) {
 			results {
 				_id
-				user {
-					_id
-					name
-				}
 				name
-				description
 				image
 				category
 				price
