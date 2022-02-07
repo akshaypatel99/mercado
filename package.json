@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node backend/index.ts",
-    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false cd frontend npm install && npm run build"
+    "heroku-postbuild": "cd frontend npm install && npm run build"
   },
   "repository": {
     "type": "git",
