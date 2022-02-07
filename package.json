@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/akshaypatel99/mercado.git"
   },
-  "author": "",
+  "author": "Akshay Patel",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/akshaypatel99/mercado/issues"
