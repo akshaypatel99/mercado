@@ -8,7 +8,6 @@ import validateTokensMiddleware from './middleware/validateTokens';
 import { port } from './config/environment';
 import schema from './graphql/';
 import connectDB from './db';
-import path from 'path';
 
 async function startApolloServer(schema) {
   const app = express();
@@ -37,12 +36,6 @@ async function startApolloServer(schema) {
   });
 
   await connectDB();
-
-  app.use(express.static(path.join(__dirname, '../frontend/out')));
-
-  app.get('*', (req, res, next) => {
-    res.sendFile(path.resolve(__dirname, '../frontend/out', 'index.html'));
-  });
 
   await new Promise<void>(resolve => httpServer.listen(port, resolve));
   console.log(`🚀 Server ready at http://localhost:${port}${server.graphqlPath}`);
