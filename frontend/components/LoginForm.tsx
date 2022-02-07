@@ -65,8 +65,8 @@ export default function LoginForm() {
 			<Center mb='16'>
 				<Heading>{auth.user ? `Welcome ${auth.user.name}!` : 'Login'}</Heading>
 			</Center>
+			<Center mb='4'>{error && <Box>{error?.message}</Box>}</Center>
 			<Center>
-				{error && <Box>{error?.message}</Box>}
 				<form onSubmit={handleLogin}>
 					<FormControl isRequired isInvalid={isEmailError} my='4'>
 						<FormLabel htmlFor='email'>Email address</FormLabel>
