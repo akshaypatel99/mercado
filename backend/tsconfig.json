@@ -20,5 +20,8 @@
   ],
   "files": [
     "types.d.ts"
+  ],
+  "presets": [
+    "@babel/preset-typescript"
   ]
 }
